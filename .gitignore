@@ -1,0 +1,5 @@
+data/*.csv
+data/*.parquet
+data/*.zip
+output/*.parquet
+__pycache__/

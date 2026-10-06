@@ -68,6 +68,19 @@ waste and cost. At 30% grocery margin with perishable waste, the cost-optimal CR
 | ![Calibration](figures/01_calibration.png) | ![Cost vs baseline](figures/03_cost_vs_baseline.png) |
 | ![Cost by velocity](figures/04_cost_by_velocity.png) | ![Example forecasts](figures/05_example_forecasts.png) |
 
+## Tableau dashboard
+
+**Live dashboard:** *(Tableau Public link to be added)*
+
+Three dashboards built from the results: store and state outcomes (fill rate, waste, stockouts
+for any model and ordering policy), model comparison (trade-off frontier, cost vs baseline,
+accuracy by horizon, calibration) and data quality (missing dates and cells, store closures,
+unlisted items, zero-sales rates, demand classes).
+
+The data extracts are in [`tableau/`](tableau/) (`m5_tableau_data.xlsx` plus CSVs), built by
+`python src/tableau_extract.py`. [`tableau/BUILD_GUIDE.md`](tableau/BUILD_GUIDE.md) covers the
+calculated fields, sheet layouts and check values.
+
 ## Assumptions and limitations
 
 - **Censored demand:** M5 records sales, not demand. Stockout days look like low-demand days.
@@ -91,6 +104,7 @@ python src/prepare.py         # features            (~30 s)
 python src/models.py          # all three forecasts (LightGBM ~35 min on 2 CPU cores)
 python src/evaluate.py        # accuracy + newsvendor tables -> output/eval_*.csv
 python src/charts.py          # figures/
+python src/tableau_extract.py  # Tableau extracts -> tableau/  (~1.5 min)
 ```
 
 Run a single model with `python src/models.py hier` (or `baseline`, `lgbm`).
@@ -102,6 +116,8 @@ src/prepare.py     load M5, filter FOODS_3, build features, train/valid/test spl
 src/models.py      baseline, LightGBM quantile, hierarchical Bayes
 src/evaluate.py    pinball loss, calibration, newsvendor sweep, segment and store-level impact
 src/charts.py      figures
+src/tableau_extract.py  Tableau-ready extracts
+tableau/           Tableau data (xlsx + CSV) and build guide
 WRITEUP.md         how forecast errors affect stores
 output/            evaluation tables (CSV), model diagnostics
 figures/           charts
